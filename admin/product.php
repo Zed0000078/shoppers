@@ -37,13 +37,13 @@ include 'includes/navbar.php';
               </div>
 
               <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade "  data-backdrop="static" data-keyboard="false" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel"><span id="editing">Add a new product</span></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
+                        <button type="button" class="close" onclick="reset()" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true" >&times;</span>
                         </button>
                       </div>
 
@@ -54,38 +54,51 @@ include 'includes/navbar.php';
                           
                          <div class="col-lg-12 form-group">
                           <label for="">Name</label>
-                          <input type="text" name="name" id="name" class="form-control" placeholder="Product name">
+                          <input type="text" name="name" id="name" class="form-control" placeholder="Product name" required>
 
                          </div>
                          <div class="col-lg-12 form-group">
                           <label for="">Comment</label>
-                          <input type="text" name="comment" id="comment" class="form-control" placeholder="Comment">
+                          <input type="text" name="comment" id="comment" class="form-control" placeholder="Comment" required>
 
                          </div>
 
                          <div class="col-lg-12 form-group">
                           <label for="">Price</label>
-                          <input type="text" name="price" id="price" class="form-control" placeholder="Price">
+                          <input type="text" name="price" id="price" class="form-control" placeholder="Price" required>
 
                          </div>
 
                          <div class="col-lg-12 form-group">
                           <label for="">Description</label>
-                          <textarea type="text" name="description" id="description" class="form-control" placeholder="Description"></textarea>
-
+                          <textarea type="text" name="description" id="description" class="form-control" placeholder="Description" required></textarea>
+                          
+                          <!-- <div class="col-lg-12 form-group" style="margin-top:10px; display:flex;justify-content:space-between;">   
+                            <form action="shop.php" method="GET">
+                              <label for="">Status</label>
+                              <select style=" padding-top:0px;" name="status" id="status" class="btn btn-primary">
+                                <option value="">Select</option>
+                                <option name="active" value="1">Active</option>
+                                <option name="inactive" value="0">Inactive</option>
+                               </select>
+                             </form>
+                         </div> -->
                          </div>
 
                          <div class="col-lg-12 form-group">
                           <label for="">Upload Image</label>
-                          <input type="file" name="image" accept="image/*" class="form-control" id="image">
+                          <input type="file" name="image" accept="image/*" class="form-control" id="image" required>
 
                          </div>
+
+                        
+
                          </div>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                           <input type="hidden" value="" name="editId" id="id" >
-                          <input type="hidden" value="" name="oldImage" id="img">
+                          <input type="hidden" value="active" name="status" id="img">
                           <button  type="submit" class="btn btn-primary" name="addproduct"><span id="done">Add</span></button>
                         </div>
                       </form>
@@ -107,6 +120,7 @@ include 'includes/navbar.php';
                     <th>Description</th>
                     <th>Edit</th>
                     <th>Delete</th>
+                    <!-- <th>Status</th> -->
                   </tr>
                   </thead>
                   <tbody>
@@ -135,6 +149,7 @@ include 'includes/navbar.php';
                         <a href="action.php?deleteId=<?php echo $row1['id'];?>" onclick="confirmDelete(event)" class="btn btn-danger btn-sm" >Delete</a>
                         
                       </td>
+                      
                    
                   </tr>
                  
@@ -149,6 +164,9 @@ include 'includes/navbar.php';
                     
                     
                     <script>
+
+
+
         function showuserdata(id, name, comment, price, image,description) {   
           document.getElementById('id').value = id;
           document.getElementById('name').value = name;
@@ -157,11 +175,30 @@ include 'includes/navbar.php';
           document.getElementById('img').value = image;
           document.getElementById('description').value = description;
           // document.getElementById('editing').value = "edit";
-          $('#editing').text('Edit the existing product');
+          $('#editing').text('Add or Edit the existing product');
           $('#done').text('Done');
-
-
+          
+          
         }
+        
+        
+        function reset(){
+          // alert("erer")
+          document.getElementById('id').value = '';
+          document.getElementById('name').value = '';
+          document.getElementById('comment').value = '';
+          document.getElementById('price').value = '';
+          document.getElementById('img').value = '';
+          document.getElementById('description').value = '';
+          // $('#editing').text('');
+          $('#done').text('Add');
+          
+        };
+
+        // $('#exampleModal').on('hidden.bs.modal', function () {
+        //       reset();
+        //   });
+
 
 
         function confirmDelete(event){
