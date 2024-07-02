@@ -53,7 +53,7 @@
                       <span class="icon icon-shopping_cart"></span>
                       <span class="count">2</span>
                     </a>
-                  </li> 
+                  </li>
                   <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
                 </ul>
               </div> 
@@ -111,7 +111,7 @@
           $row = mysqli_fetch_array($result);
 
           ?>
-          <strong class="text-black"><?php echo $row['name'];?></strong></div>
+          <strong class="text-black" id="productName"><?php echo $row['name'];?></strong></div>
 
         </div>
       </div>
@@ -119,7 +119,7 @@
 
 
     <?php
-            $full_url = "http://localhost/shoppers/admin/upload";
+          $full_url = "http://localhost/shoppers/admin/upload";
           $sql = 'select * from featuredproducts where id="'.$_REQUEST['id'].'"';
           $result = mysqli_query($con, $sql);
           $row = mysqli_fetch_array($result);
@@ -133,7 +133,7 @@
           <div class="col-md-6">
             <h2 class="text-black"><?php echo $row['name'];?> </h2>
             <p><?php echo $row['description'];?></p>
-            <p><strong class="text-primary h4">$<?php echo $row['price'];?></strong></p>
+            <p><strong id="productPrice" class="text-primary h4">$<?php echo $row['price'];?></strong></p>
             <div class="mb-1 d-flex">
               <label for="option-sm" class="d-flex mr-3 mb-3">
                 <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-sm" name="shop-sizes"></span> <span class="d-inline-block text-black">Small</span>
@@ -160,7 +160,7 @@
             </div>
 
             </div>
-            <p><a href="cart.php" class="buy-now btn btn-sm btn-primary">Add To Cart</a></p>
+            <p><a href="cart.php?id=<?php echo $row['id']?>" id="addToCart" data-product-id="<?php echo $row['id']?>" class="buy-now btn btn-sm btn-primary">Add To Cart</a></p>
 
           </div>
         </div>
@@ -186,7 +186,7 @@
           <div class="col-md-12">
             <div class="nonloop-block-3 owl-carousel">
               
-            <?php 
+            <?php
             // $full_url = 'localhost/shoppers/admin/upload';
             $full_url = "http://localhost/shoppers/admin/upload";
             $sql = 'select * from featuredproducts';
@@ -203,7 +203,7 @@
                     <h3><a href="#"><?php echo $row['name'];?></a></h3>
                     <p class="mb-0"><?php echo $row['comment'];?></p>
                     <p class="text-primary font-weight-bold">$<?php echo $row['price'];?></p>
-                  </div>
+                  </div>      
                 </div>
               </div>
               <?php } ?>
@@ -319,7 +319,7 @@
                   <input type="submit" class="btn btn-sm btn-primary" value="Send">
                 </div>
               </form>
-            </div>  
+            </div>
           </div>
         </div>
         <div class="row pt-5 mt-5 text-center">
@@ -345,6 +345,26 @@
   <script src="js/aos.js"></script>
 
   <script src="js/main.js"></script>
-    
+
+  <script>
+    $(document).ready(function(){
+        $('#addToCart').click(function(e){
+            e.preventDefault();
+            var productId = $(this).data('product-id');
+            var productName = $('#productName').text();
+            var productPrice = $('#productPrice').text();
+            $.ajax({
+                url: 'cartAction.php',
+                type: 'POST',
+                data: {id: productId, product:productName, price:productPrice},
+                success: function(response) {
+                    alert('Product added to cart!');
+                    window.location.href = "cart.php"
+                }
+            });
+        });
+    });
+</script>
+   
   </body>
 </html>
