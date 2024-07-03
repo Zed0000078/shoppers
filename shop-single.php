@@ -128,12 +128,12 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6">
-            <img src="<?php echo $full_url.'/'.$row['image'];?>" alt="Image" class="img-fluid">
+            <img id="image1" src="<?php echo $full_url.'/'.$row['image'];?>" alt="Image" class="img-fluid">
           </div>
           <div class="col-md-6">
             <h2 class="text-black"><?php echo $row['name'];?> </h2>
             <p><?php echo $row['description'];?></p>
-            <p><strong id="productPrice" class="text-primary h4">$<?php echo $row['price'];?></strong></p>
+            <p>$<strong id="productPrice" class="text-primary h4"><?php echo $row['price'];?></strong></p>
             <div class="mb-1 d-flex">
               <label for="option-sm" class="d-flex mr-3 mb-3">
                 <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-sm" name="shop-sizes"></span> <span class="d-inline-block text-black">Small</span>
@@ -153,7 +153,7 @@
               <div class="input-group-prepend">
                 <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
               </div>
-              <input type="text" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+              <input id="productQuantity" type="text" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
               <div class="input-group-append">
                 <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
               </div>
@@ -347,16 +347,34 @@
   <script src="js/main.js"></script>
 
   <script>
+    // Function to get the src of an image by its id
+    function getImageSrcById(imageId) {
+        // Get the image element by its id
+        var imgElement = document.getElementById(imageId);
+
+        // Check if the image element exists
+        if (imgElement) {
+            // Get the src attribute of the image element
+            return imgElement.src;
+        } else {
+            // Return a message if the image element is not found
+            return "Image not found";
+        }
+    }
+
     $(document).ready(function(){
         $('#addToCart').click(function(e){
             e.preventDefault();
             var productId = $(this).data('product-id');
             var productName = $('#productName').text();
             var productPrice = $('#productPrice').text();
+            var productQuantity = $('#productQuantity').val();
+            var imagesrc = getImageSrcById("image1");
+            var totalprice = $("#totalprice").text();
             $.ajax({
                 url: 'cartAction.php',
                 type: 'POST',
-                data: {id: productId, product:productName, price:productPrice},
+                data: {id: productId, product:productName, price:productPrice, qty:productQuantity, img:imagesrc, totalprice:totalprice},
                 success: function(response) {
                     alert('Product added to cart!');
                     window.location.href = "cart.php"
